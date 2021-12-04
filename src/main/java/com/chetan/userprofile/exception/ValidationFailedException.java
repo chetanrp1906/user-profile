@@ -1,19 +1,19 @@
 package com.chetan.userprofile.exception;
 
-import com.chetan.userprofile.error.Error;
+import com.chetan.userprofile.error.ErrorCode;
 
 import java.util.List;
 
 public class ValidationFailedException extends PlatformException {
 
-    private final List<Error> errors;
+    private final List<ErrorCode> errorCodes;
 
-    public ValidationFailedException(List<Error> errors) {
+    public ValidationFailedException(List<ErrorCode> errorCodes) {
         super("Validation Failed");
-        this.errors = errors;
+        this.errorCodes = errorCodes;
     }
 
-    public List<Error> getErrors() {
-        return errors;
+    public List<ErrorCode> getErrorCodes() {
+        return errorCodes;
     }
 }

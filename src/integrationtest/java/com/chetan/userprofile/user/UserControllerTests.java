@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 
 class UserControllerTests implements TestSpecs {
 
@@ -45,6 +46,22 @@ class UserControllerTests implements TestSpecs {
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body("code[0]", equalTo(UserErrorCode.FIRST_NAME_REQUIRED.getCode()));
+    }
+
+    @Test
+    @DisplayName("Create user API should return multiple errors when multiple fields are invalid")
+    void shouldReturnMultipleErrors() {
+        UserDTO userDTO = createUserCreateRequestBody();
+        userDTO.setFirstName("");
+        userDTO.setPassword("");
+
+        given()
+                .body(userDTO, ObjectMapperType.JACKSON_2)
+                .header(HttpHeaders.CONTENT_TYPE, ContentType.JSON)
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("size()", is(2));
     }
 
     private UserDTO createUserCreateRequestBody() {

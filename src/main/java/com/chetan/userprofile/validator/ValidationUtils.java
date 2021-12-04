@@ -1,9 +1,10 @@
 package com.chetan.userprofile.validator;
 
-import com.chetan.userprofile.error.Error;
 import com.chetan.userprofile.error.ErrorCode;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ValidationUtils {
 
@@ -14,11 +15,11 @@ public class ValidationUtils {
         return value == null || value.trim().isEmpty();
     }
 
-    public static Optional<Error> validateIsEmpty(String value, ErrorCode errorCode) {
-        if (isEmpty(value)) {
-            return Error.createOptionalError(errorCode);
-        } else {
-            return Optional.empty();
-        }
+    public static List<ErrorCode> extractErrorCodes(List<Optional<ErrorCode>> optionalErrorCodes) {
+        return optionalErrorCodes
+                .stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 }

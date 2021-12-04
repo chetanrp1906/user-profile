@@ -1,20 +1,18 @@
 package com.chetan.userprofile.validator;
 
-import com.chetan.userprofile.error.Error;
 import com.chetan.userprofile.error.ErrorCode;
-import com.chetan.userprofile.user.error.UserErrorCode;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.List;
 import java.util.Optional;
 
-class ValidationUtilsTests {
+import static org.assertj.core.api.Assertions.*;
 
-    private static final ErrorCode errorCode = UserErrorCode.FIRST_NAME_REQUIRED;
+class ValidationUtilsTests {
 
     @ParameterizedTest(name = "{index} isEmpty method should return 'true' if value is {0}")
     @ValueSource(strings = {"", " "})
@@ -25,11 +23,11 @@ class ValidationUtilsTests {
         Boolean actualValue = ValidationUtils.isEmpty(value);
 
         //then
-        Assertions.assertThat(actualValue).isTrue();
+        assertThat(actualValue).isTrue();
     }
 
     @Test
-    @DisplayName("isEmpty method return 'false' if value is not empty")
+    @DisplayName("isEmpty method should return 'false' if value is not empty")
     void shouldReturnFalseWhenValueIsNotEmpty() {
         //given
         String value = "value";
@@ -38,33 +36,35 @@ class ValidationUtilsTests {
         Boolean actualValue = ValidationUtils.isEmpty(value);
 
         //then
-        Assertions.assertThat(actualValue).isFalse();
-    }
-
-    @ParameterizedTest(name = "{index} validateISEmpty method should return error when value is {0}")
-    @ValueSource(strings = {"", " "})
-    @NullSource
-    void validateIsEmptyShouldReturnErrorWhenInvalidInput(String value) {
-        //given
-        //when
-        Optional<Error> error = ValidationUtils.validateIsEmpty(value, errorCode);
-
-        //then
-        Assertions.assertThat(error).isPresent();
-        Assertions.assertThat(error.get().getCode()).isEqualTo(errorCode.getCode());
-        Assertions.assertThat(error.get().getDescription()).isEqualTo(errorCode.getDescription());
+        assertThat(actualValue).isFalse();
     }
 
     @Test
-    @DisplayName("validateISEmpty method should not return error when value is not empty")
-    void validateIsEmptyShouldNotReturnErrorWhenValidInput() {
+    @DisplayName("extractErrorCodes method should return list of error codes")
+    void shouldReturnListOfErrorCodes() {
         //given
-        String value = "value";
+        List<Optional<ErrorCode>> optionalErrorCodes
+                = List.of(Optional.of(DummyErrorCode.INVALID_INPUT));
 
         //when
-        Optional<Error> error = ValidationUtils.validateIsEmpty(value, errorCode);
+        List<ErrorCode> errorCodes = ValidationUtils.extractErrorCodes(optionalErrorCodes);
 
         //then
-        Assertions.assertThat(error).isNotPresent();
+        assertThat(errorCodes.size()).isGreaterThan(0);
+        assertThat(errorCodes.get(0)).isEqualTo(DummyErrorCode.INVALID_INPUT);
+    }
+
+    @Test
+    @DisplayName("extractErrorCodes method should return empty list when error codes are not present")
+    void shouldReturnEmptyListOfErrorCodes() {
+        //given
+        List<Optional<ErrorCode>> optionalErrorCodes
+                = List.of(Optional.empty());
+
+        //when
+        List<ErrorCode> errorCodes = ValidationUtils.extractErrorCodes(optionalErrorCodes);
+
+        //then
+        assertThat(errorCodes.isEmpty()).isTrue();
     }
 }

@@ -4,7 +4,7 @@ import com.chetan.userprofile.user.dto.UserDTO;
 import com.chetan.userprofile.user.entity.User;
 import com.chetan.userprofile.user.mapper.UserMapper;
 import com.chetan.userprofile.user.service.UserService;
-import com.chetan.userprofile.validator.Validator;
+import com.chetan.userprofile.validator.MultiErrorsValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
-    private Validator<UserDTO> createUserRequestValidator;
+    private final MultiErrorsValidator<UserDTO> createUserRequestValidator;
 
-    public UserControllerImpl(UserService userService, Validator<UserDTO> createUserRequestValidator) {
+    public UserControllerImpl(UserService userService, MultiErrorsValidator<UserDTO> createUserRequestValidator) {
         this.userService = userService;
         this.createUserRequestValidator = createUserRequestValidator;
     }
@@ -23,8 +23,8 @@ public class UserControllerImpl implements UserController {
     @Override
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(UserDTO userDTO) {
+        createUserRequestValidator.validate(userDTO);
         User user = UserMapper.MAPPER.toUser(userDTO);
-        createUserRequestValidator.validateAndThrowException(userDTO);
         userService.save(user);
     }
 }

@@ -8,7 +8,8 @@ public enum UserErrorCode implements ErrorCode {
     EMAIL_REQUIRED(2, "Email is mandatory"),
     PASSWORD_REQUIRED(3, "Password is mandatory"),
     INVALID_PASSWORD(4, "Password is not valid"),
-    EMAIL_IN_USE(5, "Email is already in use");
+    EMAIL_IN_USE(5, "Email is already in use"),
+    INVALID_EMAIL(6, "Email is not valid");
 
     private int errorCode;
     private String description;
