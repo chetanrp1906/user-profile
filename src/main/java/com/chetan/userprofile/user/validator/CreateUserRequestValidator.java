@@ -13,7 +13,7 @@ import java.util.Optional;
 public class CreateUserRequestValidator implements MultiErrorsValidator<UserDTO> {
 
     private static final long ZERO_USERID = 0L;
-    private CommonUserRequestValidations commonUserRequestValidations;
+    private final CommonUserRequestValidations commonUserRequestValidations;
 
     public CreateUserRequestValidator(CommonUserRequestValidations commonUserRequestValidations) {
         this.commonUserRequestValidations = commonUserRequestValidations;
