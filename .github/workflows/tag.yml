@@ -19,6 +19,6 @@ jobs:
           git config user.name "Test"
           git config user.email "<>"
           git status
-          git tag github.event.inputs.tagName
+          git tag 1.0
           git describe
       
