@@ -20,5 +20,5 @@ jobs:
           git config user.email "<>"
           git status
           git tag ${{ github.event.inputs.tagName }}
-          git push ${{ origin github.event.inputs.tagName }}
+          git push origin ${{ github.event.inputs.tagName }}
       
