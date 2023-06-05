@@ -1,0 +1,24 @@
+name: "Create Tag"
+
+on:
+  workflow_dispatch:
+    inputs:
+      tagName:
+        description: "tag name"
+        required: true
+        
+jobs:
+  Create-Tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: git
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git --version
+          git config user.name "Test"
+          git config user.email "<>"
+          git status
+          git tag github.event.inputs.tagName
+          git describe
+      
