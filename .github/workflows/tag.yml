@@ -16,8 +16,8 @@ jobs:
         run: |
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
           git --version
-          git config user.name "Test"
-          git config user.email "<>"
+          git config user.name "test123"
+          git config user.email "test@test.com"
           git status
           git tag ${{ github.event.inputs.tagName }}
           git push origin ${{ github.event.inputs.tagName }}
