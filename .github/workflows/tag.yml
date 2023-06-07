@@ -15,6 +15,7 @@ jobs:
       - name: ca
         run: |
           echo "apple"
+          git config --list
       - name: git
         run: |
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
